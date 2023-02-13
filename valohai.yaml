@@ -1,0 +1,39 @@
+- step:
+    name: train
+    image: drazend/yolov5
+    environment: aws-eu-central-1-p2-xlarge
+    command:
+      - git clone https://github.com/ultralytics/yolov5.git
+      - nohup python valohai_watch.py &
+      - python yolov5/train.py {parameters}
+    inputs:
+      - name: datasets
+        default: 
+          - s3://valohai-yolov5/datasets/coco128.yaml
+          - s3://valohai-yolov5/datasets/*
+        keep-directories: suffix
+    parameters:
+      - name: data
+        default: ./datasets/coco128.yaml
+        type: string
+        description: dataset.yaml path
+      - name: epochs
+        default: 3
+        type: integer
+        description: total training epochs
+      - name: batch
+        default: 16
+        type: integer
+        description: total batch size for all GPUs
+      - name: img
+        default: 640
+        type: integer
+        description: train
+      - name: optimizer
+        default: 'SGD'
+        type: string
+        description: optimizer
+      - name: project
+        default: /valohai/outputs/
+        type: string
+        description: save to project/name
