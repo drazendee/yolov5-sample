@@ -1,0 +1,5 @@
+- step:
+    name: hello
+    image: python:3.9
+    command:
+      - echo "hello"
